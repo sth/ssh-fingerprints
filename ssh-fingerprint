@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e -u
+set -o pipefail
+
+TRYHASH=1
+for KEY in /etc/ssh/ssh_host_*_key.pub; do
+	ssh-keygen -l -f "$KEY" | cut -d ' ' -f '1,3-'
+	for HASH in md5 sha256; do
+		printf "   "
+		ssh-keygen -l -E $HASH -f "$KEY" | cut -d ' ' -f 2 2>/dev/null
+		if [ "$?" != 0 ]; then
+			ssh-keygen -l -f "$KEY" | cut -d ' ' -f 2
+			break
+		fi
+	done
+	echo
+done
