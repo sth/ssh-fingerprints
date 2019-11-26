@@ -2,6 +2,17 @@
 set -e -u
 set -o pipefail
 
+if [[ -n "${1:-}" ]]; then
+	echo "usage: $0"
+	echo "Show ssh server host key fingerprints as MD5 and SHA256"
+
+	if [[ "${1:-}" == @(-h|--help) ]]; then
+		exit 0
+	else
+		exit 1
+	fi
+fi
+
 TRY_KEYGEN=1
 for KEY in /etc/ssh/ssh_host_*_key.pub; do
 	ssh-keygen -l -f "$KEY" | cut -d ' ' -f '1,3-'
