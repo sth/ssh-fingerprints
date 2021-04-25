@@ -13,7 +13,6 @@ if [[ -n "${1:-}" ]]; then
 	fi
 fi
 
-TRY_KEYGEN=1
 for KEY in /etc/ssh/ssh_host_*_key.pub; do
 	ssh-keygen -l -f "$KEY" | cut -d ' ' -f '1,3-'
 	for HASH in md5 sha256; do
